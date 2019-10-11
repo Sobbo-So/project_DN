@@ -12,7 +12,7 @@ public class Scene_Base : MonoBehaviour {
 
     public GameObject blocker;
     public Image img_fade;
-    public void Awake() {
+    public virtual void Awake() {
         img_fade.gameObject.SetActive(true);
         Sequence sequence = DOTween.Sequence()
             .OnStart(delegate () {
@@ -24,7 +24,7 @@ public class Scene_Base : MonoBehaviour {
             });
     }
 
-    public void ChangeScene(int index) {
+    public virtual void ChangeScene(int index) {
         Sequence sequence = DOTween.Sequence()
             .OnStart(delegate () {
                 img_fade.gameObject.SetActive(true);

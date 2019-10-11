@@ -26,4 +26,8 @@ public partial class Scene_Game : Scene_Base {
         // animator 실행 (wait은 coroutine으로 할 예정)
     }
 
+    public void MoveRecipeUI() {
+        rt_RecipeUI.DOMoveX(-(_currentRecipeOrder * 980) + 50, 0.5f);
+    }
+
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 // for Game
 public partial class Scene_Game : Scene_Base
@@ -19,24 +20,32 @@ public partial class Scene_Game : Scene_Base
         public const int NIGHT = 1;
     }
 
+    [Serializable]
+    public struct RecipeButton {
+        public int key;
+        public Button[] buttons;
+    }
+
+
     public GameObject contents;
 
     public GameObject panel_RecipeUI;
+    public RectTransform rt_RecipeUI;
     public GameObject panel_WeaponUI;
 
     [Header("UI_Recipe Panel")]
-    public GameObject[] lstRecipePanels;
-    public Button[] lstColors;
+    public RecipeButton[] lstRecipeButtons;
 
     // private
     private int _currentState;
     private int _currentWorld;
 
     private int _currentRecipeOrder;
+    private int _remainColorTouch = 2;
     private float _doingTime = -1f;
 
     private int _selectRecipe_A;        // cup
-    private int _selectRecipe_B;        // color
+    private int _selectRecipe_B;        // color hex
     private int _selectRecipe_C;        // straw
 
     public int currentState {
@@ -50,6 +59,19 @@ public partial class Scene_Game : Scene_Base
             int prev = _currentState;
             _currentState = value;
             ChangeStateDirect(prev, _currentState);
+        }
+    }
+
+    public override void Awake() {
+        base.Awake();
+
+        foreach (var data in lstRecipeButtons) {
+            int index = 0;
+            foreach (var bt in data.buttons) {
+                bt.onClick.RemoveAllListeners();
+                bt.onClick.AddListener(delegate () { OnTouchedRecipe(data.key, index); });
+                ++index;
+            }
         }
     }
 
@@ -71,14 +93,31 @@ public partial class Scene_Game : Scene_Base
                 _selectRecipe_A = select;
                 break;
             case 1:
-                _selectRecipe_B = select;
+                if (_remainColorTouch == 2)
+                    _selectRecipe_B = select;
+                else if (_remainColorTouch == 1)
+                    _selectRecipe_B = RecipeColor.TotalColor(_selectRecipe_B, select);
+                --_remainColorTouch;
                 break;
             case 2:
                 _selectRecipe_C = select;
                 break;
         }
-        ++_currentRecipeOrder;
 
+        if (order != 1 || _remainColorTouch <= 0) {
+            if (_currentRecipeOrder + 1 >= Contents.MAX_RECIPE_OREDER)
+                _currentRecipeOrder = 0;
+            else
+                ++_currentRecipeOrder;
+            MoveRecipeUI();
+        }
+    }
 
+    public void DropCurrentRecipe() {
+        _currentRecipeOrder = -1;
+        _remainColorTouch = 2;
+        _selectRecipe_A = -1;
+        _selectRecipe_B = -1;
+        _selectRecipe_C = -1;
     }
 }
