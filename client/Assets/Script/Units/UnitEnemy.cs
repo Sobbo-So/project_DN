@@ -1,17 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using DG.Tweening;
 
 public class UnitEnemy : UnitBase {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public RectTransform rectTransform;
 
-    // Update is called once per frame
-    void Update()
-    {
+
+    private Sequence sequence;
+    public void Awake() {
         
     }
 }
