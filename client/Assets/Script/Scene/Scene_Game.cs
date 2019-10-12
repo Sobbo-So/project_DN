@@ -20,6 +20,8 @@ public partial class Scene_Game : Scene_Base
         public const int NIGHT = 1;
     }
 
+    [NonSerialized] public static Scene_Game instance = null;
+
     [Serializable]
     public struct RecipeButton {
         public int key;
@@ -37,18 +39,10 @@ public partial class Scene_Game : Scene_Base
     public RecipeButton[] lstRecipeButtons;
 
     // private
+    [NonSerialized] public static float doingTime = 0f;
+
     private int _currentState;
     private int _currentWorld;
-
-    private int _currentRecipeOrder;
-    private int _remainColorTouch = 2;
-    private float _doingTime = -1f;
-
-    private int _selectRecipe_A;        // cup
-    private int _selectRecipe_B;        // color hex
-    private int _selectRecipe_C;        // straw
-
-    [NonSerialized] public static int hasColor = 0;
 
     public int currentState {
         get {
@@ -67,12 +61,13 @@ public partial class Scene_Game : Scene_Base
     public override void Awake() {
         base.Awake();
 
+        instance = this;
         foreach (var data in lstRecipeButtons) {
-            int index = 0;
-            foreach (var bt in data.buttons) {
+            var tempList = new List<Button>(data.buttons);
+            foreach (var bt in tempList) {
+                var indexOf = tempList.IndexOf(bt);
                 bt.onClick.RemoveAllListeners();
-                bt.onClick.AddListener(delegate () { OnTouchedRecipe(data.key, index); });
-                ++index;
+                bt.onClick.AddListener(delegate () { OnTouchedRecipe(data.key, data.key == 1 ? RecipeColor.IndexOf(indexOf) : indexOf); });
             }
         }
 
@@ -82,46 +77,28 @@ public partial class Scene_Game : Scene_Base
     public void OnChangeWorld() {
         _currentWorld = _currentWorld == World.NIGHT ? World.DAY : World.NIGHT;
         ChangeWorldDirect();
+        // wait 필요
 
         panel_RecipeUI.SetActive(_currentWorld == World.DAY);
         panel_WeaponUI.SetActive(_currentWorld == World.NIGHT);
+
+        layout_Day.SetActive(_currentWorld == World.DAY);
+        layout_Night.SetActive(_currentWorld == World.NIGHT);
     }
 
-    public void OnTouchedRecipe(int order, int select) {
-        if (order != _currentRecipeOrder) {
-            return;
-        }
-
-        switch (order) {
-            case 0:
-                _selectRecipe_A = select;
-                break;
-            case 1:
-                if (_remainColorTouch == 2)
-                    _selectRecipe_B = select;
-                else if (_remainColorTouch == 1)
-                    _selectRecipe_B = RecipeColor.TotalColor(_selectRecipe_B, select);
-                --_remainColorTouch;
-                break;
-            case 2:
-                _selectRecipe_C = select;
-                break;
-        }
-
-        if (order != 1 || _remainColorTouch <= 0) {
-            if (_currentRecipeOrder + 1 >= Contents.MAX_RECIPE_OREDER)
-                _currentRecipeOrder = 0;
-            else
-                ++_currentRecipeOrder;
-            MoveRecipeUI();
-        }
+    public void OnPause() {
+        currentState = State.PAUSE;
+        var popup = Instantiate(GlobalPrefabData.instance.pref_popup_pause);
+        popup.transform.SetParent(trans_popups);
     }
 
-    public void DropCurrentRecipe() {
-        _currentRecipeOrder = -1;
-        _remainColorTouch = 2;
-        _selectRecipe_A = -1;
-        _selectRecipe_B = -1;
-        _selectRecipe_C = -1;
+    public void AddScore(int add) {
+        _score += add;
+        UpdateMyData();
+    }
+
+    public void AddMoney(int add) {
+        MyData.Instance.money += add;
+        UpdateMyData();
     }
 }

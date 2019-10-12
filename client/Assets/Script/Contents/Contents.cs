@@ -1,20 +1,69 @@
-﻿public static class Contents {
+﻿using UnityEngine;
+
+public static class Contents {
     public const int MAX_RECIPE_CUP = 2;
     public const int MAX_RECIPE_STRAW = 3;
 
     public const int MAX_RECIPE_OREDER = 3;
 
     public const int MAX_CUSTOMER_COUNT = 3;
+
+    public static int GetScoreByTime(float percent) {
+        if (percent >= 0.8f) {
+            return 250;
+        }
+        else if (percent >= 0.5f) {
+            return 100;
+        }
+        else if (percent >= 0.1f) {
+            return 25;
+        }
+        else if (percent >= 0f) {
+            return 10;
+        }
+        return 0;
+    }
+
+    public static int GetMoneyByTime(float percent) {
+        if (percent >= 0.8f) {
+            return 10;
+        }
+        else if (percent >= 0.5f) {
+            return 5;
+        }
+        else if (percent >= 0.1f) {
+            return 3;
+        }
+        else if (percent >= 0f) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public static void ShuffleList<T>(System.Collections.Generic.List<T> list) {
+        int random1;
+        int random2;
+
+        T tmp;
+
+        for (int index = 0; index < list.Count; ++index) {
+            random1 = Random.Range(0, list.Count);
+            random2 = Random.Range(0, list.Count);
+
+            tmp = list[random1];
+            list[random1] = list[random2];
+            list[random2] = tmp;
+        }
+    }
 }
 
 public static class RecipeColor {
-    public const int RED = 0;
-    public const int GREEN = 1;
+    public const int RED = 1;
     public const int BLUE = 2;
-    public const int WHITE = 3;
-    public const int BLACK = 4;
+    public const int YELLOW = 4;
+    public const int WHITE = 8;
+    public const int BLACK = 12;
 
-    // can return color
     public static int TotalColor(int color1, int color2) {
         if (color1 == color2) {
             return color1;
@@ -23,8 +72,24 @@ public static class RecipeColor {
         return color1 + color2;
     }
 
-    public static int MaxColor(int addColor) {
-        int maxColor = WHITE + addColor;
-        return maxColor + maxColor - 1;
+    public static int RandomColor(int hasColor = 0) {
+        return TotalColor(IndexOf(Random.Range(0, 3 + hasColor)), IndexOf(Random.Range(0, 3 + hasColor)));
+    }
+
+    public static int IndexOf(int index) {
+        switch (index) {
+            case 0:
+                return RED;
+            case 1:
+                return BLUE;
+            case 2:
+                return YELLOW;
+            case 3:
+                return WHITE;
+            case 4:
+                return BLACK;
+        }
+        return 0;
     }
 }
+

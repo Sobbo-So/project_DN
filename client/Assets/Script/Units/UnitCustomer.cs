@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using System.Linq;
 
 public class UnitCustomer : UnitBase {
     [NonSerialized] public int id;
-
-    private GameObject _prefab;
 
     private int _objective_A = 0;     // cup
     private int _objective_B = 0;     // color
@@ -18,10 +17,21 @@ public class UnitCustomer : UnitBase {
     public RectTransform rt_timerEffect;
 
     private float _timer = 0f;
+    public float remainTime {
+        get {
+            return Mathf.Max(0, _timer);
+        }
+    }
     private float _totalTimer= 10f;
     private void Update() {
-        _timer -= Time.deltaTime;
-        TimerUpdate();
+        if (_timer > 0) {
+            _timer -= Time.deltaTime;
+            TimerUpdate();
+
+            if (_timer <= 0) {
+                SetUnitDestroy(true);
+            }
+        }
     }
 
     private void TimerUpdate() {
@@ -38,14 +48,32 @@ public class UnitCustomer : UnitBase {
 
         var random = new System.Random();
         _objective_A = random.Next(Contents.MAX_RECIPE_CUP - 1);
-        _objective_B = random.Next(RecipeColor.MaxColor(Scene_Game.hasColor));
+        _objective_B = RecipeColor.RandomColor(Scene_Game.hasColor);
         _objective_C = random.Next(Contents.MAX_RECIPE_STRAW - 1);
-        _prefab = Instantiate(GlobalPrefabData.instance.lstCustomerPrefab[random.Next(GlobalPrefabData.instance.lstCustomerPrefab.Length)]);
-        _totalTimer = random.Next(10, 15);
-        _prefab.transform.SetParent(transform);
+
+        prefab = Instantiate(GlobalPrefabData.instance.lstCustomerPrefab[random.Next(GlobalPrefabData.instance.lstCustomerPrefab.Length)]);
+        prefab.transform.SetParent(transform);
+        prefab.transform.localPosition = Vector3.zero;
+
+        animator_prefab = prefab.GetComponent<Animator>() != null ? prefab.GetComponent<Animator>() : prefab.AddComponent<Animator>();
+
+        _totalTimer = random.Next(150, 160);
+        _timer = _totalTimer;
     }
 
     public bool CheckObjective(int a, int b, int c) {
         return _objective_A == a && _objective_B == b && _objective_C == c;
+    }
+
+    public override void SetUnitDestroy(bool dead) {
+        if (Scene_Game.instance != null)
+            Scene_Game.instance.RemoveUnitCustomer(this);
+
+        //연출 후 Destory
+        base.SetUnitDestroy(dead);
+    }
+
+    public float GetRemainTimeRatio() {
+        return _timer / _totalTimer;
     }
 }
