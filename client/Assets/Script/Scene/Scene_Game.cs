@@ -26,8 +26,8 @@ public partial class Scene_Game : Scene_Base
         public Button[] buttons;
     }
 
-
     public GameObject contents;
+    public Transform trans_popups;
 
     public GameObject panel_RecipeUI;
     public RectTransform rt_RecipeUI;
@@ -47,6 +47,8 @@ public partial class Scene_Game : Scene_Base
     private int _selectRecipe_A;        // cup
     private int _selectRecipe_B;        // color hex
     private int _selectRecipe_C;        // straw
+
+    [NonSerialized] public static int hasColor = 0;
 
     public int currentState {
         get {
@@ -73,6 +75,8 @@ public partial class Scene_Game : Scene_Base
                 ++index;
             }
         }
+
+        UpdateMyData();
     }
 
     public void OnChangeWorld() {

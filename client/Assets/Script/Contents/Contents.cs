@@ -1,8 +1,10 @@
 ﻿public static class Contents {
-    public const int RECIPE_CUP_MAX = 2;
-    public const int RECIPT_STRAW_MAX = 3;
+    public const int MAX_RECIPE_CUP = 2;
+    public const int MAX_RECIPE_STRAW = 3;
 
     public const int MAX_RECIPE_OREDER = 3;
+
+    public const int MAX_CUSTOMER_COUNT = 3;
 }
 
 public static class RecipeColor {
