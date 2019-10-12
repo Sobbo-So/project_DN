@@ -6,20 +6,7 @@ using System;
 
 // for Direct
 public partial class Scene_Game : Scene_Base {
-    public class WeaponData {
-        public int colorCode;
 
-        public int level;
-        public int damage;
-        public int price;
-        
-        public WeaponData() {
-            colorCode = 0;
-            level = 1;
-            damage = 0;
-            price = 100;
-        }
-    }
 
     [Header("Doing Game - Night")]
     public Transform trans_Parent_NormalEnemy;
@@ -28,11 +15,13 @@ public partial class Scene_Game : Scene_Base {
 
     public GameObject panel_Penalty;
 
+    [SerializeField]
+    public List<WeaponCell> lstWeaponCells = new List<WeaponCell>();
+
     private List<UnitEnemy> normalEnemies = new List<UnitEnemy>();
     private List<UnitEnemy> penaltyEnemies = new List<UnitEnemy>();
 
     private double _lastCreateEnemy = -1;
-    private WeaponData _selectWeapon = null;
     private Stack<int> _lstSpawnPositionX;
 
     public void SpawnEnemy() {
@@ -58,7 +47,7 @@ public partial class Scene_Game : Scene_Base {
                 unit.transform.localPosition = new Vector2(_lstSpawnPositionX.Pop(), GameData.instance.lstEnemyPositionY[_lstSpawnPositionX.Count % 2 == 0 ? 0 : 1]);
 
                 var unitEnemy = unit.GetComponent<UnitEnemy>();
-                unitEnemy.Initialize(UnitEnemy.Type.NORMAL, ColorCode.RandomColor(showColorCount));
+                unitEnemy.Initialize(UnitEnemy.Type.NORMAL, ColorCode.IndexOf(UnityEngine.Random.Range(0, showColorCount)));
 
                 normalEnemies.Add(unitEnemy);
             }

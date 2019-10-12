@@ -27,6 +27,8 @@ public class GameData : MonoBehaviour {
     public int[] lstEnemyPositionX;
     public int[] lstEnemyPositionY = new int[2] { 1100, 1220 };
 
+    public Sprite[] lstWeaponSprites;
+
     public void Awake() {
         if (instance == null)
             instance = this;

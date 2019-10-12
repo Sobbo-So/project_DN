@@ -48,6 +48,8 @@ public partial class Scene_Game : Scene_Base
         }
 
         ChangeState(State.NONE_START);
+        selectWeapon = lstWeaponCells[0];
+        lstWeaponCells[0].ShowEffect(true);
         UpdateMyData();
     }
 

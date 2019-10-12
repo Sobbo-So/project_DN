@@ -27,6 +27,7 @@ public partial class Scene_Game : Scene_Base {
                 StartCoroutine(_SetStartGame());
                 break;
             case State.DOING:
+                RefreshWeaponCells(true);
                 break;
             case State.PAUSE:
                 break;
@@ -104,5 +105,23 @@ public partial class Scene_Game : Scene_Base {
     public void UpdateMyData() {
         txt_Money.text = MyData.Instance.money.ToString();
         txt_Score.text = score.ToString();
+    }
+
+    public void RefreshWeaponCells(bool isInit = false) {
+        int index = 0;
+        foreach (var cell in lstWeaponCells) {
+            if (isInit) {
+                cell.Initialize();
+                cell.bt_Current.onClick.RemoveAllListeners();
+                cell.bt_Current.onClick.AddListener(delegate () {
+                    selectWeapon.ShowEffect(false);
+                    selectWeapon = cell;
+                    selectWeapon.ShowEffect(true);
+                });
+            }
+
+            cell.gameObject.SetActive(index < showColorCount);
+            ++index;
+        }
     }
 }

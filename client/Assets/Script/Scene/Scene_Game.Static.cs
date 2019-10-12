@@ -40,4 +40,6 @@ public partial class Scene_Game : Scene_Base {
     public static int currentWorld;
 
     public static int score = 0;
+
+    public static WeaponCell selectWeapon = null;
 }

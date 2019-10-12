@@ -134,5 +134,6 @@ public partial class Scene_Game : Scene_Base {
         showDecoCount = LevelValue.GetMaxCupAndDecoCount(_completedCustomerCount);
         _maxCustomerCount = LevelValue.GetMaxCustomerCount(doingTime);
         enemyAddHP = _completedCustomerCount / 5;
+        RefreshWeaponCells();
     }
 }

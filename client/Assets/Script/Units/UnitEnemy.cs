@@ -49,10 +49,7 @@ public class UnitEnemy : UnitBase {
         base.SetUnitDestroy(dead);
     }
 
-    public bool Attack(Vector2 pos, int color, int damage) {
-        if (!_collider.bounds.Contains(pos))
-            return false;
-
+    public bool Attack(int color, int damage) {
         if (_color > 0 && _color != color)
             return false;     // miss 처리
 
@@ -76,5 +73,9 @@ public class UnitEnemy : UnitBase {
                 Scene_Game.instance.SetGameOver();
             }
         }
+    }
+
+    public void OnTouch() {
+        Attack(Scene_Game.selectWeapon.colorCode, Scene_Game.selectWeapon.data.damage);
     }
 }
