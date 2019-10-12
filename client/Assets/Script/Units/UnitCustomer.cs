@@ -10,7 +10,7 @@ public class UnitCustomer : UnitBase {
 
     private int _objective_A = 0;     // cup
     private int _objective_B = 0;     // color
-    private int _objective_C = 0;     // straw
+    private int _objective_C = 0;     // deco
 
     [Header("Timer UI")]
     public Image img_timerGauge;
@@ -48,11 +48,11 @@ public class UnitCustomer : UnitBase {
 
         var random = new System.Random();
         _objective_A = random.Next(Contents.MAX_RECIPE_CUP - 1);
-        _objective_B = ColorCode.RandomColor(Scene_Game.hasColor);
-        _objective_C = random.Next(Contents.MAX_RECIPE_STRAW - 1);
+        _objective_B = ColorCode.RandomColor(Scene_Game.showColorCount);
+        _objective_C = random.Next(Contents.MAX_RECIPE_DECO - 1);
 
         var spriteData = GameData.instance.lstCustomerSpriteData[random.Next(GameData.instance.lstCustomerSpriteData.Length)];
-        sprite = spriteData.sprite;
+        image.sprite = spriteData.sprite;
         animator = spriteData.animator == null ? gameObject.GetComponent<Animator>() : spriteData.animator;
 
         _totalTimer = random.Next(150, 160);

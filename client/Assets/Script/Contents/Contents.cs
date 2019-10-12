@@ -1,12 +1,23 @@
 ﻿using UnityEngine;
 
 public static class Contents {
-    public const int MAX_RECIPE_CUP = 2;
-    public const int MAX_RECIPE_STRAW = 3;
+    public const int MAX_RECIPE_CUP = 3;
+
+    public const int MAX_COLOR = 5;
+    public const int MIN_COLOR = 2;
+
+    public const int MAX_RECIPE_DECO = 3;
 
     public const int MAX_RECIPE_OREDER = 3;
 
     public const int MAX_CUSTOMER_COUNT = 3;
+
+    public const int MIN_ENEMY_HP = 3;
+    public const int MAX_ENEMY_HP = 7;
+
+    public const int PENALTY_ENEMY_HP = 40;
+
+    public const int MAX_SPAWN_ENEMY_COUNT = 4;
 
     public static int GetScoreByTime(float percent) {
         if (percent >= 0.8f) {
@@ -72,8 +83,8 @@ public static class ColorCode {
         return color1 + color2;
     }
 
-    public static int RandomColor(int hasColor = 0) {
-        return TotalColor(IndexOf(Random.Range(0, 3 + hasColor)), IndexOf(Random.Range(0, 3 + hasColor)));
+    public static int RandomColor(int colorCount = 2) {
+        return TotalColor(IndexOf(Random.Range(0, colorCount)), IndexOf(Random.Range(0, colorCount)));
     }
 
     public static int IndexOf(int index) {
@@ -109,3 +120,32 @@ public static class ColorCode {
     }
 }
 
+public static class LevelValue {
+    public static int GetMaxCupAndDecoCount(int count) {
+        if (count >= 16)
+            return Contents.MAX_RECIPE_CUP;
+        else
+            return Contents.MAX_RECIPE_CUP - 1;
+    }
+
+    public static int GetMaxColorCount(int count) {
+        if (count >= 51)
+            return Contents.MAX_COLOR;
+        else if (count >= 31)
+            return Contents.MAX_COLOR - 1;
+        else if (count >= 6)
+            return Contents.MAX_COLOR - 2;
+        else
+            return Contents.MAX_COLOR - 3;
+    }
+
+    public static int GetMaxCustomerCount(float second) {
+        if (second >= 61f)
+            return Contents.MAX_CUSTOMER_COUNT;
+        else if (second >= 31f)
+            return Contents.MAX_CUSTOMER_COUNT - 1;
+        else
+            return Contents.MAX_CUSTOMER_COUNT - 2;
+    }
+
+}

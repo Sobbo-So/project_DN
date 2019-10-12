@@ -4,18 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-
-// for Game
 public partial class Scene_Game : Scene_Base {
-
-    private Vector3 touchedPos;
-    private bool touchOn;
-
     void FixedUpdate() {
-        if (_currentState == State.DOING)
+        if (currentState == State.DOING) {
             doingTime += Time.deltaTime;
-
-        SpawnCustomer();
+            if (_maxCustomerCount < Contents.MAX_CUSTOMER_COUNT)
+                RefreshDayLevel();
+        }
     }
 
     void Update() {
@@ -27,6 +22,11 @@ public partial class Scene_Game : Scene_Base {
                         break;
                 }
             }
+        }
+
+        if (currentState == State.DOING) {
+            SpawnCustomer();
+            SpawnEnemy();
         }
     }
 
