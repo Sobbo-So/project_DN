@@ -24,6 +24,8 @@ public class GameData : MonoBehaviour {
     public GameObject prefab_UnitEnemy;
 
     public Vector2[] lstCustomerPosition;
+    public int[] lstEnemyPositionX;
+    public int[] lstEnemyPositionY = new int[2] { 1100, 1220 };
 
     public void Awake() {
         if (instance == null)

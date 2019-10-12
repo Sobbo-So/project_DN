@@ -7,21 +7,6 @@ using System;
 // for Game
 public partial class Scene_Game : Scene_Base
 {
-    public static class State {
-        public const int NONE_START = 0;
-        public const int DOING = 1;
-        public const int PAUSE = 2;
-
-        public const int ENDED = 100;
-    }
-
-    public static class World {
-        public const int DAY = 0;
-        public const int NIGHT = 1;
-    }
-
-    [NonSerialized] public static Scene_Game instance = null;
-
     [Serializable]
     public struct RecipeButton {
         public int key;
@@ -31,33 +16,24 @@ public partial class Scene_Game : Scene_Base
     public GameObject contents;
     public Transform trans_popups;
 
-    public GameObject panel_RecipeUI;
-    public RectTransform rt_RecipeUI;
-    public GameObject panel_WeaponUI;
+    public GameObject panel_StartUI;
+    public GameObject panel_StartDoingUI;
+    public GameObject panel_DoingUI;
+    public GameObject panel_GameOverUI;
+
+    public RectTransform rt_DoingLayout;
+    public RectTransform rt_ChangeLayoutEffect;
+
+    [Header("Panel_WaitStart")]
+    public Text txt_Counter;
+
+    [Header("Panel_GameOver")]
+    public GameObject obj_GameOverLogo;
 
     [Header("UI_Recipe Panel")]
     public RecipeButton[] lstRecipeButtons;
 
     // private
-    [NonSerialized] public static float doingTime = 0f;
-
-    private int _currentState;
-    private int _currentWorld;
-
-    public int currentState {
-        get {
-            return _currentState;
-        }
-        set {
-            if (_currentState == value)
-                return;
-
-            int prev = _currentState;
-            _currentState = value;
-            ChangeStateDirect(prev, _currentState);
-        }
-    }
-
     public override void Awake() {
         base.Awake();
 
@@ -71,12 +47,28 @@ public partial class Scene_Game : Scene_Base
             }
         }
 
+        ChangeState(State.NONE_START);
         UpdateMyData();
     }
 
+    public void InitializeState() {
+        if (currentState == State.NONE_START)
+            txtBestScore.text = MyData.Instance.best_score.ToString();
+        else if (currentState == State.DOING) {
+            DateTime currentDate = DateTime.Now;
+            TimeSpan span = new TimeSpan(currentDate.Ticks);
+            var currentSecond = span.TotalSeconds;
+
+            _lastCreateCustomer = _lastCreateCustomer = currentSecond;
+
+            currentWorld = World.DAY;
+            ChangeWorldDirect(false);
+        }
+    }
+
     public void OnChangeWorld() {
-        _currentWorld = _currentWorld == World.NIGHT ? World.DAY : World.NIGHT;
-        ChangeWorldDirect();
+        currentWorld = currentWorld == World.NIGHT ? World.DAY : World.NIGHT;
+        ChangeWorldDirect(true);
     }
 
     public void OnPause() {
@@ -86,7 +78,7 @@ public partial class Scene_Game : Scene_Base
     }
 
     public void AddScore(int add) {
-        _score += add;
+        score += add;
         UpdateMyData();
     }
 
@@ -96,14 +88,29 @@ public partial class Scene_Game : Scene_Base
     }
 
     public void SetGameOver() {
-
+        ChangeState(State.WAIT_ENDED);
     }
 
-    public IEnumerator _SetGameOver() {
-        if (_currentWorld == World.DAY) {
-            _currentWorld = World.NIGHT;
-            ChangeWorldDirect();
+    private IEnumerator _SetGameOver() {
+        if (currentWorld == World.DAY) {
+            currentWorld = World.NIGHT;
+            ChangeWorldDirect(true);
             yield return new WaitForSeconds(0.5f);
         }
+        obj_GameOverLogo.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        ChangeState(State.ENDED);
+        obj_GameOverLogo.SetActive(false);
+    }
+    
+    private IEnumerator _SetStartGame() {
+        int count = 3;
+        while (count > 0) {
+            txt_Counter.text = count.ToString();
+            yield return new WaitForSeconds(1f);
+            --count; 
+        }
+
+        ChangeState(State.DOING);
     }
 }

@@ -13,29 +13,88 @@ public partial class Scene_Game : Scene_Base {
     public Text txt_Money;
     public Text txt_Score;
 
-    public void ChangeStateDirect(int prev, int value) {
+    public void ChangeStateDirect(int value) {
+        panel_StartUI.SetActive(value == State.NONE_START);
+        panel_StartDoingUI.SetActive(value == State.WAIT_START);
+        panel_DoingUI.SetActive(value == State.DOING);
+        panel_GameOverUI.SetActive(value == State.WAIT_ENDED || value == State.ENDED);
+
+        InitializeState();
         switch (value) {
             case State.NONE_START:
+                break;
+            case State.WAIT_START:
+                StartCoroutine(_SetStartGame());
                 break;
             case State.DOING:
                 break;
             case State.PAUSE:
                 break;
+            case State.WAIT_ENDED:
+                StartCoroutine(_SetGameOver());
+                break;
             case State.ENDED:
-                if (prev == State.DOING) {
-                    // Coroutine Effect
-                }
                 break;
         }
     }
 
-    public void ChangeWorldDirect() {
+    public void ChangeWorldDirect(bool isChange) {
         // animator 실행 (wait은 coroutine으로 할 예정)
-        panel_RecipeUI.SetActive(_currentState != State.ENDED && _currentWorld == World.DAY);
-        panel_WeaponUI.SetActive(_currentState != State.ENDED && _currentWorld == World.NIGHT);
+        StartCoroutine(_ChangeWorldDirect(isChange));
+        //Sequence sequence1 = DOTween.Sequence()
+        //    .OnStart(delegate() {
+        //        rt_ChangeLayoutEffect.pivot = new Vector2(currentWorld == World.NIGHT ? 0 : 1f, 0.5f);
+        //        rt_ChangeLayoutEffect.anchorMin = new Vector2(currentWorld == World.NIGHT ? 0 : 1f, 1f);
+        //        rt_ChangeLayoutEffect.anchorMax = new Vector2(currentWorld == World.NIGHT ? 0 : 1f, 1f);
+        //
+        //        rt_ChangeLayoutEffect.localPosition = Vector3.zero;
+        //        rt_ChangeLayoutEffect.gameObject.SetActive(true);
+        //    })
+        //    .Append(rt_ChangeLayoutEffect.DOMoveX(currentWorld == World.NIGHT ? -2160 : 2160, 0.5f))
+        //    .OnComplete(delegate () {
+        //        rt_ChangeLayoutEffect.gameObject.SetActive(false);
+        //        rt_DoingLayout.localPosition = new Vector2(currentWorld == World.DAY ? 0 : -1080, 0);
+        //
+        //        bool isDayTime = currentState != State.ENDED && currentWorld == World.DAY;
+        //        bool isNightTime = currentState != State.ENDED && currentWorld == World.NIGHT;
+        //
+        //        panel_RecipeUI.SetActive(isDayTime);
+        //        panel_WeaponUI.SetActive(isNightTime);
+        //    });
+        ////Sequence sequence2 = DOTween.Sequence()
+        //    .Append(rt_DoingLayout.DOMoveX(currentWorld == World.DAY ? 0 : -1080, 0.3f))
+        //    .OnComplete(delegate () {
+        //        bool isDayTime = currentState != State.ENDED && currentWorld == World.DAY;
+        //        bool isNightTime = currentState != State.ENDED && currentWorld == World.NIGHT;
+        //
+        //        panel_RecipeUI.SetActive(isDayTime);
+        //        panel_WeaponUI.SetActive(isNightTime);
+        //    });
+    }
 
-        layout_Day.SetActive(_currentState != State.ENDED && _currentWorld == World.DAY);
-        layout_Night.SetActive(_currentState != State.ENDED && _currentWorld == World.NIGHT);
+    private IEnumerator _ChangeWorldDirect(bool isChange) {
+        if (isChange) {
+            rt_ChangeLayoutEffect.pivot = new Vector2(currentWorld == World.NIGHT ? 0 : 1f, 0.5f);
+            rt_ChangeLayoutEffect.anchorMin = new Vector2(currentWorld == World.NIGHT ? 0 : 1f, 1f);
+            rt_ChangeLayoutEffect.anchorMax = new Vector2(currentWorld == World.NIGHT ? 0 : 1f, 1f);
+
+            rt_ChangeLayoutEffect.localPosition = Vector3.zero;
+            rt_ChangeLayoutEffect.gameObject.SetActive(true);
+
+            rt_ChangeLayoutEffect.DOMoveX(currentWorld == World.NIGHT ? -2160 : 2160, 0.5f);
+
+            yield return new WaitForSeconds(0.08f);
+
+            rt_DoingLayout.localPosition = new Vector2(currentWorld == World.DAY ? -540 : -1620, 0);
+        }
+
+        bool isDayTime = currentState != State.ENDED && currentWorld == World.DAY;
+        bool isNightTime = currentState != State.ENDED && currentWorld == World.NIGHT;
+
+        panel_RecipeUI.SetActive(isDayTime);
+        panel_WeaponUI.SetActive(isNightTime);
+
+        yield return new WaitForSeconds(0.35f);
     }
 
     public void MoveRecipeUI() {
@@ -44,6 +103,6 @@ public partial class Scene_Game : Scene_Base {
 
     public void UpdateMyData() {
         txt_Money.text = MyData.Instance.money.ToString();
-        txt_Score.text = _score.ToString();
+        txt_Score.text = score.ToString();
     }
 }

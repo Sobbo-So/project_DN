@@ -7,29 +7,39 @@ using System.Linq;
 public partial class Scene_Game : Scene_Base {
     [Header("Doing Game - Day")]
     public Transform trans_ParentCustomer;
-    public GameObject layout_Day;
+
+    public GameObject panel_RecipeUI;
+    public RectTransform rt_RecipeUI;
 
     private List<UnitCustomer> unitCustomers = new List<UnitCustomer>();       // Max 3
 
     private int _currentRecipeOrder;
     private int _remainColorTouch = 2;
 
+    private int _maxCustomerCount = 1;
+
     private double _lastCreateCustomer = -1;
     private double _createCustomerTime = 10;
 
     private int _selectRecipe_A;        // cup
     private int _selectRecipe_B;        // color hex
-    private int _selectRecipe_C;        // straw
+    private int _selectRecipe_C;        // deco
 
-    private int _score = 0;
-
-    [NonSerialized] public static int hasColor = 0;
-
+    private int _completedCustomerCount = 0;
+    public int completedCustomerCount {
+        get {
+            return _completedCustomerCount;
+        }
+        set {
+            _completedCustomerCount = value;
+            RefreshDayLevel();
+        }
+    }
     public void SpawnCustomer() {
         if (GameData.instance.prefab_UnitCustomer == null)
             return;
 
-        if (unitCustomers.Count < Contents.MAX_CUSTOMER_COUNT) {
+        if (unitCustomers.Count < _maxCustomerCount) {
             DateTime currentDate = DateTime.Now;
             TimeSpan span = new TimeSpan(currentDate.Ticks);
             var currentSecond = span.TotalSeconds;
@@ -110,6 +120,7 @@ public partial class Scene_Game : Scene_Base {
         foreach (var unit in unitCustomers) {
             if (unit.CheckObjective(_selectRecipe_A, _selectRecipe_B, _selectRecipe_C)) {
                 AddScore(Contents.GetScoreByTime(unit.GetRemainTimeRatio()));
+                ++completedCustomerCount;
                 unit.SetUnitDestroy(false);
                 break;
             }
@@ -117,4 +128,11 @@ public partial class Scene_Game : Scene_Base {
         ResetCurrentRecipe();
     }
 
+    public void RefreshDayLevel() {
+        showCupCount = LevelValue.GetMaxCupAndDecoCount(_completedCustomerCount);
+        showColorCount = LevelValue.GetMaxColorCount(_completedCustomerCount);
+        showDecoCount = LevelValue.GetMaxCupAndDecoCount(_completedCustomerCount);
+        _maxCustomerCount = LevelValue.GetMaxCustomerCount(doingTime);
+        enemyAddHP = _completedCustomerCount / 5;
+    }
 }
