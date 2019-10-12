@@ -57,7 +57,7 @@ public static class Contents {
     }
 }
 
-public static class RecipeColor {
+public static class ColorCode {
     public const int RED = 1;
     public const int BLUE = 2;
     public const int YELLOW = 4;
@@ -88,6 +88,22 @@ public static class RecipeColor {
                 return WHITE;
             case 4:
                 return BLACK;
+        }
+        return 0;
+    }
+
+    public static int GetIndex(int color) {
+        switch (color) {
+            case RED:
+                return 0;
+            case BLUE:
+                return 1;
+            case YELLOW:
+                return 2;
+            case WHITE:
+                return 3;
+            case BLACK:
+                return 4;
         }
         return 0;
     }

@@ -67,7 +67,7 @@ public partial class Scene_Game : Scene_Base
             foreach (var bt in tempList) {
                 var indexOf = tempList.IndexOf(bt);
                 bt.onClick.RemoveAllListeners();
-                bt.onClick.AddListener(delegate () { OnTouchedRecipe(data.key, data.key == 1 ? RecipeColor.IndexOf(indexOf) : indexOf); });
+                bt.onClick.AddListener(delegate () { OnTouchedRecipe(data.key, data.key == 1 ? ColorCode.IndexOf(indexOf) : indexOf); });
             }
         }
 
@@ -77,18 +77,11 @@ public partial class Scene_Game : Scene_Base
     public void OnChangeWorld() {
         _currentWorld = _currentWorld == World.NIGHT ? World.DAY : World.NIGHT;
         ChangeWorldDirect();
-        // wait 필요
-
-        panel_RecipeUI.SetActive(_currentWorld == World.DAY);
-        panel_WeaponUI.SetActive(_currentWorld == World.NIGHT);
-
-        layout_Day.SetActive(_currentWorld == World.DAY);
-        layout_Night.SetActive(_currentWorld == World.NIGHT);
     }
 
     public void OnPause() {
         currentState = State.PAUSE;
-        var popup = Instantiate(GlobalPrefabData.instance.pref_popup_pause);
+        var popup = Instantiate(GameData.instance.pref_popup_pause);
         popup.transform.SetParent(trans_popups);
     }
 
@@ -100,5 +93,17 @@ public partial class Scene_Game : Scene_Base
     public void AddMoney(int add) {
         MyData.Instance.money += add;
         UpdateMyData();
+    }
+
+    public void SetGameOver() {
+
+    }
+
+    public IEnumerator _SetGameOver() {
+        if (_currentWorld == World.DAY) {
+            _currentWorld = World.NIGHT;
+            ChangeWorldDirect();
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }

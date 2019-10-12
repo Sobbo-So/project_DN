@@ -41,21 +41,19 @@ public class UnitCustomer : UnitBase {
     }
 
     public void Initialize(int id) {
-        if (GlobalPrefabData.instance == null)
+        if (GameData.instance == null)
             return;
 
         this.id = id;
 
         var random = new System.Random();
         _objective_A = random.Next(Contents.MAX_RECIPE_CUP - 1);
-        _objective_B = RecipeColor.RandomColor(Scene_Game.hasColor);
+        _objective_B = ColorCode.RandomColor(Scene_Game.hasColor);
         _objective_C = random.Next(Contents.MAX_RECIPE_STRAW - 1);
 
-        prefab = Instantiate(GlobalPrefabData.instance.lstCustomerPrefab[random.Next(GlobalPrefabData.instance.lstCustomerPrefab.Length)]);
-        prefab.transform.SetParent(transform);
-        prefab.transform.localPosition = Vector3.zero;
-
-        animator_prefab = prefab.GetComponent<Animator>() != null ? prefab.GetComponent<Animator>() : prefab.AddComponent<Animator>();
+        var spriteData = GameData.instance.lstCustomerSpriteData[random.Next(GameData.instance.lstCustomerSpriteData.Length)];
+        sprite = spriteData.sprite;
+        animator = spriteData.animator == null ? gameObject.GetComponent<Animator>() : spriteData.animator;
 
         _totalTimer = random.Next(150, 160);
         _timer = _totalTimer;

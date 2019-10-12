@@ -31,6 +31,11 @@ public partial class Scene_Game : Scene_Base {
 
     public void ChangeWorldDirect() {
         // animator 실행 (wait은 coroutine으로 할 예정)
+        panel_RecipeUI.SetActive(_currentState != State.ENDED && _currentWorld == World.DAY);
+        panel_WeaponUI.SetActive(_currentState != State.ENDED && _currentWorld == World.NIGHT);
+
+        layout_Day.SetActive(_currentState != State.ENDED && _currentWorld == World.DAY);
+        layout_Night.SetActive(_currentState != State.ENDED && _currentWorld == World.NIGHT);
     }
 
     public void MoveRecipeUI() {

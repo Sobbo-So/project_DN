@@ -26,7 +26,7 @@ public partial class Scene_Game : Scene_Base {
     [NonSerialized] public static int hasColor = 0;
 
     public void SpawnCustomer() {
-        if (GlobalPrefabData.instance.prefab_UnitCustomer == null)
+        if (GameData.instance.prefab_UnitCustomer == null)
             return;
 
         if (unitCustomers.Count < Contents.MAX_CUSTOMER_COUNT) {
@@ -46,13 +46,13 @@ public partial class Scene_Game : Scene_Base {
                         break;
                 }
 
-                if (GlobalPrefabData.instance.lstCustomerPosition.Length <= randomID)
+                if (GameData.instance.lstCustomerPosition.Length <= randomID)
                     return;
 
                 if (!useIDs.Contains(randomID)) {
-                    var unit = Instantiate(GlobalPrefabData.instance.prefab_UnitCustomer);
+                    var unit = Instantiate(GameData.instance.prefab_UnitCustomer);
                     unit.transform.SetParent(trans_ParentCustomer);
-                    unit.transform.localPosition = GlobalPrefabData.instance.lstCustomerPosition[randomID];
+                    unit.transform.localPosition = GameData.instance.lstCustomerPosition[randomID];
 
                     var unitCustomer = unit.GetComponent<UnitCustomer>();
                     unitCustomer.Initialize(randomID);
@@ -80,7 +80,7 @@ public partial class Scene_Game : Scene_Base {
                 if (_remainColorTouch == 2)
                     _selectRecipe_B = select;
                 else if (_remainColorTouch == 1)
-                    _selectRecipe_B = RecipeColor.TotalColor(_selectRecipe_B, select);
+                    _selectRecipe_B = ColorCode.TotalColor(_selectRecipe_B, select);
                 --_remainColorTouch;
                 break;
             case 2:
