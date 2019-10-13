@@ -10,7 +10,7 @@ public partial class Scene_Game : Scene_Base {
 
     [Header("Doing Game - Night")]
     public Transform trans_Parent_NormalEnemy;
-    public Transform trans_Parnet_PenaltyEnemy;
+    public Transform trans_Parent_PenaltyEnemy;
     public GameObject panel_WeaponUI;
 
     public GameObject panel_Penalty;
@@ -57,8 +57,37 @@ public partial class Scene_Game : Scene_Base {
     public void RemoveEnemy(UnitEnemy obj) {
         if (obj.type == UnitEnemy.Type.NORMAL)
             normalEnemies.Remove(obj);
-        if (obj.type == UnitEnemy.Type.PENALTY)
+        if (obj.type == UnitEnemy.Type.PENALTY) {
             penaltyEnemies.Remove(obj);
+            if (penaltyEnemies.Count <= 0)
+                panel_Penalty.SetActive(false);
+        }
+    }
+
+    public void SpawnPenaltyEnemy() {
+        if (!panel_Penalty.activeSelf) {
+            panel_Penalty.SetActive(true);
+        }
+
+        var unit = Instantiate(GameData.instance.prefab_UnitPenaltyEnemy);
+        unit.transform.SetParent(trans_Parent_PenaltyEnemy);
+        unit.transform.localPosition = new Vector2(UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100));
+
+        var unitEnemy = unit.GetComponent<UnitEnemy>();
+        unitEnemy.Initialize(UnitEnemy.Type.PENALTY);
+
+        penaltyEnemies.Add(unitEnemy);
+    }
+
+    public void ResetNightTime() {
+        normalEnemies.Clear();
+        penaltyEnemies.Clear();
+        foreach (Transform child in trans_Parent_NormalEnemy) {
+            GameObject.Destroy(child.gameObject);
+        }
+        foreach (Transform child in trans_Parent_PenaltyEnemy) {
+            GameObject.Destroy(child.gameObject);
+        }
     }
 }
    

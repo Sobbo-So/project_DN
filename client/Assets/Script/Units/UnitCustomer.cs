@@ -16,6 +16,10 @@ public class UnitCustomer : UnitBase {
     public Image img_timerGauge;
     public RectTransform rt_timerEffect;
 
+    public Image img_Objective_A;
+    public Image img_Objective_B;
+    public Image img_Objective_C;
+
     private float _timer = 0f;
     public float remainTime {
         get {
@@ -47,15 +51,20 @@ public class UnitCustomer : UnitBase {
         this.id = id;
 
         var random = new System.Random();
-        _objective_A = random.Next(Contents.MAX_RECIPE_CUP - 1);
+        _objective_A = random.Next(Scene_Game.showCupCount);
         _objective_B = ColorCode.RandomColor(Scene_Game.showColorCount);
-        _objective_C = random.Next(Contents.MAX_RECIPE_DECO - 1);
+        _objective_C = random.Next(Scene_Game.showDecoCount);
 
+        img_Objective_A.sprite = GameData.instance.lstCupMainSprites[Scene_Game._lstCupTypes[_objective_A]];
+        img_Objective_B.sprite = GameData.instance.lstCupLayerSprites.Where(x => x.cupIndex == Scene_Game._lstCupTypes[_objective_A] && x.colorID == _objective_B).First().sprite;
+        img_Objective_C.sprite = GameData.instance.lstDecoSprites[Scene_Game._lstDecoTypes[_objective_C]];
+
+        // 손님 Sprite
         var spriteData = GameData.instance.lstCustomerSpriteData[random.Next(GameData.instance.lstCustomerSpriteData.Length)];
         image.sprite = spriteData.sprite;
         animator = spriteData.animator == null ? gameObject.GetComponent<Animator>() : spriteData.animator;
 
-        _totalTimer = random.Next(150, 160);
+        _totalTimer = random.Next(14, 15);
         _timer = _totalTimer;
     }
 
@@ -64,8 +73,11 @@ public class UnitCustomer : UnitBase {
     }
 
     public override void SetUnitDestroy(bool dead) {
-        if (Scene_Game.instance != null)
+        if (Scene_Game.instance != null) {
             Scene_Game.instance.RemoveUnitCustomer(this);
+            if (dead)
+                Scene_Game.instance.SpawnPenaltyEnemy();
+        }
 
         //연출 후 Destory
         base.SetUnitDestroy(dead);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public class UnitEnemy : UnitBase {
@@ -20,6 +21,8 @@ public class UnitEnemy : UnitBase {
     private int _hp = 0;
     private int _speed = 1;
 
+    private Vector2 moveValue = Vector2.one;
+
     public void Initialize(int type, int colorCode = 0) {
         this.type = type;
 
@@ -35,6 +38,7 @@ public class UnitEnemy : UnitBase {
             animator = spriteData.animator == null ? gameObject.GetComponent<Animator>() : spriteData.animator;
         } else {
             _hp = Contents.PENALTY_ENEMY_HP;
+            _speed = UnityEngine.Random.Range(5, 7);
 
             var spriteData = GameData.instance.lstPenaltyEnemySpriteData[UnityEngine.Random.Range(0, Mathf.Max(0, GameData.instance.lstPenaltyEnemySpriteData.Length - 1))];
             image.sprite = spriteData.sprite;
@@ -43,8 +47,12 @@ public class UnitEnemy : UnitBase {
     }
 
     public override void SetUnitDestroy(bool dead) {
-        if (Scene_Game.instance != null)
+        if (Scene_Game.instance != null) {
             Scene_Game.instance.RemoveEnemy(this);
+            if (!dead) {
+                Scene_Game.instance.AddMyItem(_color, 1);
+            }
+        }
 
         base.SetUnitDestroy(dead);
     }
@@ -72,10 +80,21 @@ public class UnitEnemy : UnitBase {
                 SetUnitDestroy(true);
                 Scene_Game.instance.SetGameOver();
             }
+        } else {
+            transform.localPosition = new Vector2(transform.localPosition.x + (moveValue.x * _speed), transform.localPosition.y + (moveValue.y * _speed));
         }
     }
 
     public void OnTouch() {
         Attack(Scene_Game.selectWeapon.colorCode, Scene_Game.selectWeapon.data.damage);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.name.Equals("Left") || collision.gameObject.name.Equals("Right")) {
+            moveValue.x *= -1;
+        }
+        else if (collision.gameObject.name.Equals("Top") || collision.gameObject.name.Equals("Bottom")) {
+            moveValue.y *= -1;
+        }
     }
 }

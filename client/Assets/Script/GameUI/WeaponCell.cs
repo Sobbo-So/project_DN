@@ -45,6 +45,8 @@ public class WeaponCell : MonoBehaviour {
         if (MyData.Instance.money < data.price)
             return;
 
+        Scene_Game.instance.PayMoney(data.price);
+
         ++data.level;
         data.price = (int)(data.price * 1.2f);
         data.damage = 1 * data.level;
