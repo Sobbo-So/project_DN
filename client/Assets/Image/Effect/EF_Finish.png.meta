@@ -1,34 +1,28 @@
 fileFormatVersion: 2
-guid: 0cb8e8665c479e947be7534a94f18944
+guid: d6418977baa04bc4eb067e135dc705c0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3691384671131734753
-    second: EF_Hate_0
+      213: -812496002851821326
+    second: EF_Finish_0
   - first:
-      213: -7356784261131267818
-    second: EF_Hate_1
+      213: 1851822625349255009
+    second: EF_Finish_1
   - first:
-      213: 477596830540392377
-    second: EF_Hate_2
+      213: -8475537357777901704
+    second: EF_Finish_2
   - first:
-      213: -6567844931377117456
-    second: EF_Hate_3
+      213: -4676668159983570698
+    second: EF_Finish_3
   - first:
-      213: -1174436684389709838
-    second: EF_Hate_4
+      213: 470601564859163300
+    second: EF_Finish_4
   - first:
-      213: 1174842892328266561
-    second: EF_Hate_5
+      213: 323037881863861961
+    second: EF_Finish_5
   - first:
-      213: 7558103438658522096
-    second: EF_Hate_6
-  - first:
-      213: -5765389194591827070
-    second: EF_Hate_7
-  - first:
-      213: 5083855150198918997
-    second: EF_Hate_8
+      213: 6724056755837746743
+    second: EF_Finish_6
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -125,13 +119,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: EF_Hate_0
+      name: EF_Finish_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,20 +133,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e52a2b1933a0e974d98602c704ecace7
-      internalID: 3691384671131734753
+      spriteID: 9f6c25df969c32840b8a18589c431ee5
+      internalID: -812496002851821326
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EF_Hate_1
+      name: EF_Finish_1
       rect:
         serializedVersion: 2
-        x: 48
+        x: 64
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,20 +154,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05d71baad9f87c7449ebff39b81e2670
-      internalID: -7356784261131267818
+      spriteID: f242b43553dc38b41b70d7b42aad0c54
+      internalID: 1851822625349255009
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EF_Hate_2
+      name: EF_Finish_2
       rect:
         serializedVersion: 2
-        x: 96
+        x: 128
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,41 +175,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69439d2697c719545adbb92c5db824e8
-      internalID: 477596830540392377
+      spriteID: e466b67e355e17648addd524e06aa2be
+      internalID: -8475537357777901704
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EF_Hate_3
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c2951507d33f99d45b3eabc0503c9866
-      internalID: -6567844931377117456
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: EF_Hate_4
+      name: EF_Finish_3
       rect:
         serializedVersion: 2
         x: 192
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -223,20 +196,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c32e5b4c067721f439011083167c1170
-      internalID: -1174436684389709838
+      spriteID: 0290062c47f868045b7a3b2bc1a13b82
+      internalID: -4676668159983570698
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EF_Hate_5
+      name: EF_Finish_4
       rect:
         serializedVersion: 2
-        x: 240
+        x: 256
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -244,20 +217,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4da9134252ff5db49995c7f5eb6e6590
-      internalID: 1174842892328266561
+      spriteID: bef409156636fa64e92fdba2023f7b8a
+      internalID: 470601564859163300
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EF_Hate_6
+      name: EF_Finish_5
       rect:
         serializedVersion: 2
-        x: 288
+        x: 320
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,41 +238,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 775fb03640ff7bb498e66824f3fb589c
-      internalID: 7558103438658522096
+      spriteID: c0d955063dc45a546b5e21e6d609e16a
+      internalID: 323037881863861961
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EF_Hate_7
-      rect:
-        serializedVersion: 2
-        x: 336
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3dbfee94404c1cf4889659f1ba40de58
-      internalID: -5765389194591827070
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: EF_Hate_8
+      name: EF_Finish_6
       rect:
         serializedVersion: 2
         x: 384
         y: 0
-        width: 48
-        height: 48
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -307,8 +259,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7bfbe59b59deec143ae9095ce7804795
-      internalID: 5083855150198918997
+      spriteID: 3da1178aef748184a940f04fdf55add5
+      internalID: 6724056755837746743
       vertices: []
       indices: 
       edges: []

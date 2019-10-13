@@ -18,5 +18,8 @@ public partial class Scene_Game : Scene_Base {
             SpawnCustomer();
             SpawnEnemy();
         }
+
+        if (currentState == State.NONE_START) {
+        }
     }
 }
