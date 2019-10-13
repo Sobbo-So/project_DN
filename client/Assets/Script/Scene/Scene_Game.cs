@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using DG.Tweening;
 
 // for Game
 public partial class Scene_Game : Scene_Base
@@ -52,6 +53,12 @@ public partial class Scene_Game : Scene_Base
             AddMyItem(ColorCode.IndexOf(i), 0);
         }
 
+        // 패턴 연출 들어갈 예정
+        //Sequence sequence = DOTween.Sequence()
+        //    .Append(rt_HeartPattern.DOLocalMove(new Vector2(338, -504), 0.5f))
+        //    .Append(rt_HeartPattern.DOLocalMove(new Vector2(-496, 502), 0.5f));
+        //sequence.SetLoops(-1, LoopType.Incremental);
+
         RefreshMaterialCells(true);
         ChangeState(State.NONE_START);
         UpdateMyData();
@@ -78,6 +85,7 @@ public partial class Scene_Game : Scene_Base
             currentWorld = World.DAY;
             ChangeWorldDirect(false);
             RefreshWeaponCells(true);
+            panel_Penalty.SetActive(false);
 
             StartCoroutine(_SetStartGame());
         } else if (currentState == State.WAIT_ENDED) {

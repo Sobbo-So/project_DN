@@ -19,6 +19,8 @@ public class GameData : MonoBehaviour {
         public Sprite sprite;
     }
 
+    [Header("Fx")]
+    public GameObject fx_Finish;
 
     [Header("Popup")]
     public Popup_Pause pref_popup_pause;

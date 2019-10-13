@@ -148,4 +148,17 @@ public partial class Scene_Game : Scene_Base {
             }
         }
     }
+
+    public void PlayFX(GameObject prefab, Transform parent, float time) {
+        var clone = Instantiate(prefab);
+        clone.transform.SetParent(parent);
+        clone.transform.localPosition = Vector2.zero;
+
+        StartCoroutine(_PlayFX(clone, time));
+    }
+
+    private IEnumerator _PlayFX(GameObject clone, float time) {
+        yield return new WaitForSeconds(time);
+        Destroy(clone);
+    }
 }

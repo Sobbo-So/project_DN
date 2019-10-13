@@ -38,7 +38,7 @@ public class UnitEnemy : UnitBase {
             animator = spriteData.animator == null ? gameObject.GetComponent<Animator>() : spriteData.animator;
         } else {
             _hp = Contents.PENALTY_ENEMY_HP;
-            _speed = UnityEngine.Random.Range(5, 7);
+            _speed = UnityEngine.Random.Range(3, 5);
 
             var spriteData = GameData.instance.lstPenaltyEnemySpriteData[UnityEngine.Random.Range(0, Mathf.Max(0, GameData.instance.lstPenaltyEnemySpriteData.Length - 1))];
             image.sprite = spriteData.sprite;
@@ -51,14 +51,20 @@ public class UnitEnemy : UnitBase {
             Scene_Game.instance.RemoveEnemy(this);
             if (!dead) {
                 Scene_Game.instance.AddMyItem(_color, 1);
+                Scene_Game.instance.PlayFX(GameData.instance.fx_Finish, this.transform, 0.3f);
             }
         }
 
+        StartCoroutine(_SetUnitDestroy(dead));
+    }
+
+    private IEnumerator _SetUnitDestroy(bool dead) {
+        yield return new WaitForSeconds(0.3f);
         base.SetUnitDestroy(dead);
     }
 
     public bool Attack(int color, int damage) {
-        if (_color > 0 && _color != color)
+        if (_color > 0 && _color != color || _hp <= 0)
             return false;     // miss 처리
 
         _hp -= type == Type.PENALTY ? 1 : damage;
@@ -74,7 +80,11 @@ public class UnitEnemy : UnitBase {
             return;
 
         if (type == Type.NORMAL) {
-            transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - _speed);
+            float ratio = 1f;
+            if (Scene_Game.currentWorld == Scene_Game.World.DAY || Scene_Game.instance.panel_Penalty.activeSelf)
+                ratio = 0.3f;
+
+            transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - (_speed * ratio));
 
             if (transform.localPosition.y <= -467) {
                 SetUnitDestroy(true);

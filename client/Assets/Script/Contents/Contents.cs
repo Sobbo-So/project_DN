@@ -12,12 +12,12 @@ public static class Contents {
 
     public const int MAX_CUSTOMER_COUNT = 3;
 
-    public const int MIN_ENEMY_HP = 3;
-    public const int MAX_ENEMY_HP = 7;
+    public const int MIN_ENEMY_HP = 1;
+    public const int MAX_ENEMY_HP = 1;
 
-    public const int PENALTY_ENEMY_HP = 40;
+    public const int PENALTY_ENEMY_HP = 20;
 
-    public const int MAX_SPAWN_ENEMY_COUNT = 4;
+    public const int MAX_SPAWN_ENEMY_COUNT = 3;
 
     public static int GetScoreByTime(float percent) {
         if (percent >= 0.8f) {

@@ -31,7 +31,7 @@ public partial class Scene_Game : Scene_Base {
         DateTime currentDate = DateTime.Now;
         TimeSpan span = new TimeSpan(currentDate.Ticks);
         var currentSecond = span.TotalSeconds;
-        if (_lastCreateEnemy < 0 || _lastCreateEnemy + 3 <= currentSecond) {
+        if (_lastCreateEnemy < 0 || _lastCreateEnemy + 5 <= currentSecond) {
             _lastCreateEnemy = currentSecond;
 
             for (int i = 0; i < UnityEngine.Random.Range(1, Contents.MAX_SPAWN_ENEMY_COUNT); ++i) {
