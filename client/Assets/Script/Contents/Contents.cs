@@ -3,7 +3,7 @@
 public static class Contents {
     public const int MAX_RECIPE_CUP = 3;
 
-    public const int MAX_COLOR = 5;
+    public const int MAX_COLOR = 3;
     public const int MIN_COLOR = 2;
 
     public const int MAX_RECIPE_DECO = 3;
@@ -132,11 +132,14 @@ public static class LevelValue {
         if (count >= 51)
             return Contents.MAX_COLOR;
         else if (count >= 31)
-            return Contents.MAX_COLOR - 1;
+            //return Contents.MAX_COLOR - 1;
+            return Contents.MIN_COLOR;
         else if (count >= 6)
-            return Contents.MAX_COLOR - 2;
+            //return Contents.MAX_COLOR - 1;
+            return Contents.MIN_COLOR;
         else
-            return Contents.MAX_COLOR - 3;
+            //return Contents.MAX_COLOR - 1;
+            return Contents.MIN_COLOR;
     }
 
     public static int GetMaxCustomerCount(float second) {

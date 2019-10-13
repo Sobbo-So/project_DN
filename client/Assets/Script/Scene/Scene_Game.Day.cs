@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Collections;
 using System.Linq;
+using UnityEngine.UI;
 
 // for Direct
 public partial class Scene_Game : Scene_Base {
@@ -10,6 +12,10 @@ public partial class Scene_Game : Scene_Base {
 
     public GameObject panel_RecipeUI;
     public RectTransform rt_RecipeUI;
+
+    public Image img_CurrentCup;
+    public Image img_CurrentColor;
+    public Image img_CurrentDeco;
 
     private List<UnitCustomer> unitCustomers = new List<UnitCustomer>();       // Max 3
 
@@ -65,6 +71,8 @@ public partial class Scene_Game : Scene_Base {
                     unit.transform.localPosition = GameData.instance.lstCustomerPosition[randomID];
 
                     var unitCustomer = unit.GetComponent<UnitCustomer>();
+                    if (randomID == 2)
+                        unitCustomer.image.rectTransform.localScale = new Vector3(-1, 1, 1);
                     unitCustomer.Initialize(randomID);
 
                     unitCustomers.Add(unitCustomer);
@@ -85,6 +93,8 @@ public partial class Scene_Game : Scene_Base {
         switch (order) {
             case 0:
                 _selectRecipe_A = select;
+                img_CurrentCup.gameObject.SetActive(true);
+                img_CurrentCup.sprite = GameData.instance.lstCupMainSprites[_lstCupTypes[_selectRecipe_A]];
                 break;
             case 1:
                 if (_remainColorTouch == 2)
@@ -92,19 +102,29 @@ public partial class Scene_Game : Scene_Base {
                 else if (_remainColorTouch == 1)
                     _selectRecipe_B = ColorCode.TotalColor(_selectRecipe_B, select);
                 --_remainColorTouch;
+                img_CurrentColor.gameObject.SetActive(true);
+                img_CurrentColor.sprite = GameData.instance.lstCupLayerSprites.Where(x => x.cupIndex == _lstCupTypes[_selectRecipe_A] && x.colorID == _selectRecipe_B).First().sprite;
+                haveColorDatas[select] -= 1;
+                RefreshMaterialCells();
                 break;
             case 2:
                 _selectRecipe_C = select;
+                img_CurrentDeco.gameObject.SetActive(true);
+                img_CurrentDeco.sprite = GameData.instance.lstDecoSprites[_lstDecoTypes[_selectRecipe_C]];
                 break;
         }
 
         if (order != 1 || _remainColorTouch <= 0) {
-            if (_currentRecipeOrder + 1 >= Contents.MAX_RECIPE_OREDER)
-                CompleteRecipe();
-            else
-                ++_currentRecipeOrder;
+            ++_currentRecipeOrder;
+            if (_currentRecipeOrder >= Contents.MAX_RECIPE_OREDER)
+                StartCoroutine(_CompleteRecipe());
             MoveRecipeUI();
         }
+    }
+
+    private IEnumerator _CompleteRecipe() {
+        yield return new WaitForSeconds(1f);
+        CompleteRecipe();
     }
 
     public void ResetCurrentRecipe() {
@@ -113,13 +133,22 @@ public partial class Scene_Game : Scene_Base {
         _selectRecipe_A = -1;
         _selectRecipe_B = -1;
         _selectRecipe_C = -1;
+
+        img_CurrentCup.gameObject.SetActive(false);
+        img_CurrentColor.gameObject.SetActive(false);
+        img_CurrentDeco.gameObject.SetActive(false);
+
+        MoveRecipeUI();
     }
 
     public void CompleteRecipe() {
         unitCustomers.Sort((x, y) => x.remainTime.CompareTo(y.remainTime));
         foreach (var unit in unitCustomers) {
             if (unit.CheckObjective(_selectRecipe_A, _selectRecipe_B, _selectRecipe_C)) {
-                AddScore(Contents.GetScoreByTime(unit.GetRemainTimeRatio()));
+                float ratio = unit.GetRemainTimeRatio();
+                AddScore(Contents.GetScoreByTime(ratio));
+                AddMoney(Contents.GetMoneyByTime(ratio));
+
                 ++completedCustomerCount;
                 unit.SetUnitDestroy(false);
                 break;
@@ -135,5 +164,12 @@ public partial class Scene_Game : Scene_Base {
         _maxCustomerCount = LevelValue.GetMaxCustomerCount(doingTime);
         enemyAddHP = _completedCustomerCount / 5;
         RefreshWeaponCells();
+    }
+
+    public void ResetDayTime() {
+        unitCustomers.Clear();
+        foreach (Transform child in trans_ParentCustomer) {
+            GameObject.Destroy(child.gameObject);
+        }
     }
 }

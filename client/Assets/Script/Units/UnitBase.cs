@@ -4,11 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UnitBase : MonoBehaviour {
-    protected Image image;
+    public Image image;
     protected Animator animator;
 
     public void Awake() {
-        image = GetComponent<Image>();
+        if (image == null) {
+            if (gameObject.GetComponent<Image>())
+                image = gameObject.GetComponent<Image>();
+            else
+                image = gameObject.AddComponent<Image>();
+        }
     }
 
     public virtual void SetUnitDestroy(bool dead) {

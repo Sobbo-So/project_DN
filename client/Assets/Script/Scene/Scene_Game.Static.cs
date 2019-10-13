@@ -42,4 +42,8 @@ public partial class Scene_Game : Scene_Base {
     public static int score = 0;
 
     public static WeaponCell selectWeapon = null;
+    public static Dictionary<int, int> haveColorDatas = new Dictionary<int, int>();
+
+    public static List<int> _lstCupTypes = new List<int>();
+    public static List<int> _lstDecoTypes = new List<int>();
 }
