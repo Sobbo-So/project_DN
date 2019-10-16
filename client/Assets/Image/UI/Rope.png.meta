@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 725ead882c84140458863cb6be6d1ce2
+guid: b8a3972746c413f4eaf589714998ebb7
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -68,7 +68,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -80,19 +80,7 @@ TextureImporter:
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -109,8 +97,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 6
-        height: 115
+        width: 12
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,7 +106,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 560d5bdd8ef58b2448c314360655a3ab
+      spriteID: b6e6612b2f02fed4c9c047854d004159
       internalID: -4570153536982545689
       vertices: []
       indices: 
@@ -128,10 +116,10 @@ TextureImporter:
       name: Rope_1
       rect:
         serializedVersion: 2
-        x: 6
+        x: 12
         y: 0
-        width: 6
-        height: 115
+        width: 12
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,7 +127,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 64413aacc2b8c214489d15931669696a
+      spriteID: 63365eb040ad4af409f440f7092b796a
       internalID: 3252368070393340514
       vertices: []
       indices: 
